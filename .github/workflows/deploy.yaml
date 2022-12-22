@@ -5,5 +5,11 @@ on:
   workflow_dispatch:
 jobs:
   deploy:
-    runs-on: ubuntu-latest
-    steps: [uses: fastai/workflows/quarto-ghp@master]
+    runs-on: windows-latest
+    steps:
+    - uses: fastai/workflows/quarto-ghp@master
+    - name: Download MSI
+      run: curl -L -o quarto-1.2.280-win.msi https://github.com/quarto-dev/quarto-cli/releases/download/v1.2.280/quarto-1.2.280-win.msi
+    - name: Install MSI
+      run: msiexec.exe /i quarto-1.2.280-win.msi /qn
+
