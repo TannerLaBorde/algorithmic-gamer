@@ -1,0 +1,9 @@
+website:
+  sidebar:
+    contents:
+      - index.ipynb
+      - 00_types.ipynb
+      - 01_vision.ipynb
+      - section: utility
+        contents:
+          - utility\application_fuzzer.ipynb
