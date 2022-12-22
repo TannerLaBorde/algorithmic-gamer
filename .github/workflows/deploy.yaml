@@ -7,14 +7,7 @@ jobs:
   deploy:
     runs-on: windows-latest
     steps:
-    - name: Download MSI
-      run: curl -L -o quarto-1.2.280-win.msi https://github.com/quarto-dev/quarto-cli/releases/download/v1.2.280/quarto-1.2.280-win.msi
-    - name: Install MSI
-      run: msiexec.exe /i quarto-1.2.280-win.msi /qn
-    - name: Update PATH environment variable
-      run: |
-        $env:PATH = "$env:LOCALAPPDATA\Programs\Quarto\bin;$env:PATH"
-        [Environment]::SetEnvironmentVariable("PATH", $env:PATH, [System.EnvironmentVariableTarget]::Machine)
+    - uses: quarto-dev/quarto-actions/setup@v2
     - name: Test quarto command
       run: quarto --version
     - uses: fastai/workflows/quarto-ghp@master
