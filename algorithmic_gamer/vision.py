@@ -92,7 +92,7 @@ def f_view(location: Union[Window, Region], time: bool = False) -> np.ndarray:
     
     # Perform a bit block transfer (BitBlt) from the window or desktop DC to the memory DC.
     memdc.BitBlt((0, 0), (width, height), srcdc, (int(region.left), int(region.top)), win32con.SRCCOPY)
-    write_time = datetime.utcnow().timestamp()
+    write_time = datetime.utcnow()
     
     # Retrieve the bitmap bits as a signed integer array.
     signed_ints_array = bmp.GetBitmapBits(True)
