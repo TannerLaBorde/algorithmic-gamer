@@ -10,13 +10,13 @@ jobs:
     - name: Download MSI
       run: curl -L -o quarto-1.2.280-win.msi https://github.com/quarto-dev/quarto-cli/releases/download/v1.2.280/quarto-1.2.280-win.msi
     - name: Install MSI
-      run: pwsh -command "& 'C:\Windows\System32\msiexec.exe' /i quarto-1.2.280-win.msi /qn"
+      run: pwsh -command "& 'C:\Windows\System32\msiexec.exe' /i 'quarto-1.2.280-win.msi' /qn"
+      shell: C:\Program Files\PowerShell\7\pwsh.EXE
     - name: Update PATH environment variable
       run: |
         $env:PATH = "$env:ProgramFiles\Quarto\bin;$env:PATH"
         [Environment]::SetEnvironmentVariable("PATH", $env:PATH, [System.EnvironmentVariableTarget]::Machine)
-    - name: Reboot runner if necessary
-      if: steps.install.outputs.exit_code == 3010
+    - name: Reboot runner
       run: Restart-Computer -Force
     - uses: fastai/workflows/quarto-ghp@master
 
