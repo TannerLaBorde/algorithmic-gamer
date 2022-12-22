@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "algorithmic-gamer"
+  site-url: "https://TannerLaBorde.github.io/algorithmic-gamer"
+  description: "a collection of functionality for making artifical intelligences that can play games. currently built for windows."
+  repo-branch: main
+  repo-url: "https://github.com/TannerLaBorde/algorithmic-gamer"
