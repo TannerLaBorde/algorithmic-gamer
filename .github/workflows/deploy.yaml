@@ -15,7 +15,7 @@ jobs:
       run: |
         $env:PATH = "$env:ProgramFiles\Quarto\bin;$env:PATH"
         [Environment]::SetEnvironmentVariable("PATH", $env:PATH, [System.EnvironmentVariableTarget]::Machine)
-    - name: Reboot runner
-      run: Restart-Computer -Force
+    - name: Test quarto command
+      run: quarto --version
     - uses: fastai/workflows/quarto-ghp@master
 
