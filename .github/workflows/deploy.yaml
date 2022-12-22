@@ -16,6 +16,6 @@ jobs:
         $env:PATH = "$env:LOCALAPPDATA\Programs\Quarto\bin;$env:PATH"
         [Environment]::SetEnvironmentVariable("PATH", $env:PATH, [System.EnvironmentVariableTarget]::Machine)
     - name: Test quarto command
-      run: "$env:LOCALAPPDATA/Programs/Quarto/bin/quarto" --version
+      run: quarto --version
     - uses: fastai/workflows/quarto-ghp@master
 
