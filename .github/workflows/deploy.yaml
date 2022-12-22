@@ -13,9 +13,9 @@ jobs:
       run: msiexec.exe /i quarto-1.2.280-win.msi /qn
     - name: Update PATH environment variable
       run: |
-        $env:PATH = "$env:ProgramFiles\Quarto\bin;$env:PATH"
+        $env:PATH = "$env:LOCALAPPDATA\Programs\Quarto\bin;$env:PATH"
         [Environment]::SetEnvironmentVariable("PATH", $env:PATH, [System.EnvironmentVariableTarget]::Machine)
     - name: Test quarto command
-      run: quarto --version
+      run: "$env:LOCALAPPDATA/Programs/Quarto/bin/quarto" --version
     - uses: fastai/workflows/quarto-ghp@master
 
