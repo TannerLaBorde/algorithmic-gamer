@@ -10,7 +10,6 @@ import ctypes
 import time
 
 # %% ../nbs/02_action.ipynb 2
-#|eval: false
 ####TODO test further
 def send_input(input_dict):
     # Set the default values for the input values
