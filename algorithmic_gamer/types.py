@@ -8,7 +8,7 @@ __all__ = ['Region', 'Window', 'VisualEventObservation', 'SoundSequenceObservati
 from dataclasses import dataclass
 from typing import Any, Dict, List
 import matplotlib.pyplot as plt
-import datetime
+from datetime import datetime
 
 # %% ../nbs/00_types.ipynb 3
 @dataclass
