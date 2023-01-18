@@ -4,6 +4,12 @@ website:
       - index.ipynb
       - 00_types.ipynb
       - 01_vision.ipynb
+      - 02_action.ipynb
+      - 03_sound.ipynb
+      - 04_gamepad_obsevations.ipynb
+      - 05_discrete_observations.ipynb
       - section: utility
         contents:
           - utility\application_fuzzer.ipynb
+          - utility\data_utils.ipynb
+          - utility\video_downloader.ipynb

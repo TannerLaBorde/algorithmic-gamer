@@ -66,6 +66,7 @@ class VibrationEventObservation:
 class DiscreteEvent:
     event_index: int
     timestamp: datetime
+    VisualEvents: List[VisualEventObservation]
     GamepadEvents: List[GamepadEventObservation]
     VibrationEvents: List[VibrationEventObservation]
     SoundSequence: SoundSequenceObservation
