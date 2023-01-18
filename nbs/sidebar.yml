@@ -2,14 +2,18 @@ website:
   sidebar:
     contents:
       - index.ipynb
-      - 00_types.ipynb
-      - 01_vision.ipynb
-      - 02_action.ipynb
-      - 03_sound.ipynb
-      - 04_gamepad_obsevations.ipynb
-      - 05_discrete_observations.ipynb
+      - section: action
+        contents:
+          - action\00_base_action.ipynb
+      - section: observation
+        contents:
+          - observation\01_vision.ipynb
+          - observation\02_sound.ipynb
+          - observation\03_gamepad.ipynb
+          - observation\04_discrete_events.ipynb
       - section: utility
         contents:
           - utility\application_fuzzer.ipynb
           - utility\data_utils.ipynb
+          - utility\types.ipynb
           - utility\video_downloader.ipynb
