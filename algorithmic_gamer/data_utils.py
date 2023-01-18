@@ -10,7 +10,6 @@ import dataclasses
 import datetime
 import numpy as np
 from typing import Dict, Any, Type, T
-import pandas as pd
 import importlib
 
 # %% ../nbs/utility/data_utils.ipynb 2
@@ -70,9 +69,6 @@ def f_to_dict(item):
     elif isinstance(item, np.ndarray):
         # Convert NumPy arrays to a list of lists
         return item.tolist()
-    elif isinstance(item, pd.DataFrame):
-        # Convert Pandas DataFrames to a list of lists
-        return item.values.tolist()
     elif isinstance(item, datetime.datetime):
         # Convert datetime objects to a string representation
         return item.isoformat()
