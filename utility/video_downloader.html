@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.313">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="functionality for acquiring data for training components of the models without agency. currently only supports youtube with yt-dlp">
+
+<title>algorithmic-gamer - Video Downloader</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+<meta property="og:title" content="algorithmic-gamer - Video Downloader">
+<meta property="og:description" content="functionality for acquiring data for training components of the models without agency. currently only supports youtube with [yt-dlp](https://github.com/yt-dlp/yt-dlp)">
+<meta property="og:site-name" content="algorithmic-gamer">
+<meta name="twitter:title" content="algorithmic-gamer - Video Downloader">
+<meta name="twitter:description" content="functionality for acquiring data for training components of the models without agency. currently only supports youtube with [yt-dlp](https://github.com/yt-dlp/yt-dlp)">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">algorithmic-gamer</span>
+    </a>
+  </div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Video Downloader</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">algorithmic-gamer</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">action</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../action/base_action.html" class="sidebar-item-text sidebar-link">Action</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">observation</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../observation/vision.html" class="sidebar-item-text sidebar-link">Vision</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../observation/sound.html" class="sidebar-item-text sidebar-link">Sound</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../observation/gamepad.html" class="sidebar-item-text sidebar-link">Gamepad</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../observation/discrete_events.html" class="sidebar-item-text sidebar-link">Discrete Events</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">utility</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../utility/application_fuzzer.html" class="sidebar-item-text sidebar-link">Application Fuzzer</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../utility/data_utils.html" class="sidebar-item-text sidebar-link">Data Utils</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../utility/types.html" class="sidebar-item-text sidebar-link">Types</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../utility/video_downloader.html" class="sidebar-item-text sidebar-link active">Video Downloader</a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#parse_video_metadata" id="toc-parse_video_metadata" class="nav-link active" data-scroll-target="#parse_video_metadata">parse_video_metadata</a></li>
+  <li><a href="#download_video_and_extract_info" id="toc-download_video_and_extract_info" class="nav-link" data-scroll-target="#download_video_and_extract_info">download_video_and_extract_info</a></li>
+  <li><a href="#videometadata" id="toc-videometadata" class="nav-link" data-scroll-target="#videometadata">VideoMetadata</a></li>
+  <li><a href="#chapter" id="toc-chapter" class="nav-link" data-scroll-target="#chapter">Chapter</a></li>
+  <li><a href="#single-video-test" id="toc-single-video-test" class="nav-link" data-scroll-target="#single-video-test">single video test</a></li>
+  <li><a href="#download-list-of-videos" id="toc-download-list-of-videos" class="nav-link" data-scroll-target="#download-list-of-videos">download list of videos</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/TannerLaBorde/algorithmic-gamer/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Video Downloader</h1>
+</div>
+
+<div>
+  <div class="description">
+    functionality for acquiring data for training components of the models without agency. currently only supports youtube with <a href="https://github.com/yt-dlp/yt-dlp">yt-dlp</a>
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<hr>
+<p><a href="https://github.com/TannerLaBorde/algorithmic-gamer/blob/main/algorithmic_gamer/utility/video_downloader.py#L63" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="parse_video_metadata" class="level3">
+<h3 class="anchored" data-anchor-id="parse_video_metadata">parse_video_metadata</h3>
+<blockquote class="blockquote">
+<pre><code> parse_video_metadata (info:dict)</code></pre>
+</blockquote>
+<hr>
+<p><a href="https://github.com/TannerLaBorde/algorithmic-gamer/blob/main/algorithmic_gamer/utility/video_downloader.py#L44" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="download_video_and_extract_info" class="level3">
+<h3 class="anchored" data-anchor-id="download_video_and_extract_info">download_video_and_extract_info</h3>
+<blockquote class="blockquote">
+<pre><code> download_video_and_extract_info (url, output_filename, download=True,
+                                  verborse=False)</code></pre>
+</blockquote>
+<hr>
+<p><a href="https://github.com/TannerLaBorde/algorithmic-gamer/blob/main/algorithmic_gamer/utility/video_downloader.py#L23" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="videometadata" class="level3">
+<h3 class="anchored" data-anchor-id="videometadata">VideoMetadata</h3>
+<blockquote class="blockquote">
+<pre><code> VideoMetadata (id:str, title:str, alt_title:str, description:str,
+                uploader:str, timestamp:int, upload_date:str,
+                release_date:str, view_count:int,
+                concurrent_view_count:int, like_count:int,
+                dislike_count:int, comment_count:int, duration:int,
+                chapters:List[__main__.Chapter], subtitles:Dict[str,str],
+                fps:int, resolution:str)</code></pre>
+</blockquote>
+<hr>
+<p><a href="https://github.com/TannerLaBorde/algorithmic-gamer/blob/main/algorithmic_gamer/utility/video_downloader.py#L16" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="chapter" class="level3">
+<h3 class="anchored" data-anchor-id="chapter">Chapter</h3>
+<blockquote class="blockquote">
+<pre><code> Chapter (start_time:int, end_time:int, title:str, description:str)</code></pre>
+</blockquote>
+</section>
+<section id="single-video-test" class="level3">
+<h3 class="anchored" data-anchor-id="single-video-test">single video test</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>video <span class="op">=</span> <span class="st">'https://www.youtube.com/watch?v=EbLh7rZ3rhU'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ydl_opts <span class="op">=</span> {</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'http-chunk-size'</span>: <span class="dv">10485760</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'external_downloader'</span>: <span class="st">'aria2c'</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'external_downloader_args'</span>: [</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">'--max-connection-per-server=8'</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">'--split=8'</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">'--continue'</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">'--auto-file-renaming=false'</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> yt_dlp.YoutubeDL(ydl_opts) <span class="im">as</span> ydl:</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    info <span class="op">=</span> ydl.extract_info(video, download<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[youtube] EbLh7rZ3rhU: Downloading webpage
+[youtube] EbLh7rZ3rhU: Downloading android player API JSON</code></pre>
+</div>
+</div>
+</section>
+<section id="download-list-of-videos" class="level3">
+<h3 class="anchored" data-anchor-id="download-list-of-videos">download list of videos</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data_path <span class="op">=</span> <span class="st">'S:/algorithmic-gamer-resources'</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="ss">f'</span><span class="sc">{</span>data_path<span class="sc">}</span><span class="ss">/videos.txt'</span>) <span class="im">as</span> f:</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    vids <span class="op">=</span> f.read().splitlines()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>failed <span class="op">=</span> []</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> v <span class="kw">in</span> vids:</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>        <span class="co">#create folder if it doesnt exist</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>        Path(<span class="ss">f'</span><span class="sc">{</span>data_path<span class="sc">}</span><span class="ss">/videos/</span><span class="sc">{</span>v[<span class="op">-</span><span class="dv">11</span>:]<span class="sc">}</span><span class="ss">/'</span>).mkdir(parents<span class="op">=</span><span class="va">True</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        <span class="co">#download and collect info</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        info <span class="op">=</span> download_video_and_extract_info(v, <span class="ss">f'</span><span class="sc">{</span>data_path<span class="sc">}</span><span class="ss">/videos/</span><span class="sc">{</span>v[<span class="op">-</span><span class="dv">11</span>:]<span class="sc">}</span><span class="ss">/video.mp4'</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        <span class="co">#parse info</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        vm <span class="op">=</span> parse_video_metadata(info)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>        <span class="co">#save info</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> <span class="bu">open</span>(<span class="ss">f'</span><span class="sc">{</span>data_path<span class="sc">}</span><span class="ss">/videos/</span><span class="sc">{</span>v[<span class="op">-</span><span class="dv">11</span>:]<span class="sc">}</span><span class="ss">/video_info.json'</span>, <span class="st">'w'</span>, encoding<span class="op">=</span><span class="st">'utf-8'</span>) <span class="im">as</span> f:</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>            json.dump(f_to_dict(info), f, ensure_ascii<span class="op">=</span><span class="va">False</span>, indent<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>        <span class="co">#save VideoMetadata</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> <span class="bu">open</span>(<span class="ss">f'</span><span class="sc">{</span>data_path<span class="sc">}</span><span class="ss">/videos/</span><span class="sc">{</span>v[<span class="op">-</span><span class="dv">11</span>:]<span class="sc">}</span><span class="ss">/video_meta_data.json'</span>, <span class="st">'w'</span>, encoding<span class="op">=</span><span class="st">'utf-8'</span>) <span class="im">as</span> f:</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>            json.dump(f_to_dict(vm), f, ensure_ascii<span class="op">=</span><span class="va">False</span>, indent<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'</span><span class="sc">{</span>v<span class="sc">}</span><span class="ss"> failed with error: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>        failed.append(v)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[youtube] PQmSUHhP3ug: Downloading webpage
+[youtube] PQmSUHhP3ug: Downloading android player API JSON
+[info] PQmSUHhP3ug: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\PQmSUHhP3ug\video.mp4
+[download] 100% of   47.81MiB in 00:00:02 at 17.98MiB/s    
+[youtube] i8G0C4W0mBs: Downloading webpage
+[youtube] i8G0C4W0mBs: Downloading android player API JSON
+[info] i8G0C4W0mBs: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\i8G0C4W0mBs\video.mp4
+[download] 100% of   28.77MiB in 00:00:01 at 19.43MiB/s  
+[youtube] VJsXa0QGXK0: Downloading webpage
+[youtube] VJsXa0QGXK0: Downloading android player API JSON
+[info] VJsXa0QGXK0: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\VJsXa0QGXK0\video.mp4
+[download] 100% of   30.85MiB in 00:00:02 at 12.79MiB/s    
+[youtube] HBOA1Jqf63Y: Downloading webpage
+[youtube] HBOA1Jqf63Y: Downloading android player API JSON
+[info] HBOA1Jqf63Y: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\HBOA1Jqf63Y\video.mp4
+[download] 100% of   97.82MiB in 00:00:04 at 23.97MiB/s  
+[youtube] vQfizhTwCvM: Downloading webpage
+[youtube] vQfizhTwCvM: Downloading android player API JSON
+[info] vQfizhTwCvM: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\vQfizhTwCvM\video.mp4
+[download] 100% of   20.22MiB in 00:00:05 at 3.94MiB/s   
+[youtube] 4Si7K_DfW3Q: Downloading webpage
+[youtube] 4Si7K_DfW3Q: Downloading android player API JSON
+[info] 4Si7K_DfW3Q: Downloading 1 format(s): 18
+[download] Destination: S:\algorithmic-gamer-resources\videos\4Si7K_DfW3Q\video.mp4
+[download] 100% of   34.74MiB in 00:00:02 at 12.10MiB/s    
+[youtube] TCkVLJtNB7I: Downloading webpage
+[youtube] TCkVLJtNB7I: Downloading android player API JSON
+[info] TCkVLJtNB7I: Downloading 1 format(s): 18
+[download] Destination: S:\algorithmic-gamer-resources\videos\TCkVLJtNB7I\video.mp4
+[download] 100% of   25.47MiB in 00:00:02 at 10.54MiB/s  
+[youtube] lxYzc51nKyQ: Downloading webpage
+[youtube] lxYzc51nKyQ: Downloading android player API JSON
+[info] lxYzc51nKyQ: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\lxYzc51nKyQ\video.mp4
+[download] 100% of  486.80MiB in 00:00:16 at 28.85MiB/s    
+[youtube] dXXS8K9mT84: Downloading webpage
+[youtube] dXXS8K9mT84: Downloading android player API JSON
+[info] dXXS8K9mT84: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\dXXS8K9mT84\video.mp4
+[download] 100% of  337.42MiB in 00:00:12 at 27.70MiB/s  
+[youtube] 2v4QH-6ZBTk: Downloading webpage
+[youtube] 2v4QH-6ZBTk: Downloading android player API JSON
+[info] 2v4QH-6ZBTk: Downloading 1 format(s): 18
+[download] Destination: S:\algorithmic-gamer-resources\videos\2v4QH-6ZBTk\video.mp4
+[download] 100% of   43.09MiB in 00:00:04 at 9.39MiB/s   
+[youtube] k4oDvMJz_4k: Downloading webpage
+[youtube] k4oDvMJz_4k: Downloading android player API JSON
+[info] k4oDvMJz_4k: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\k4oDvMJz_4k\video.mp4
+[download] 100% of  155.24MiB in 00:00:05 at 30.25MiB/s  
+[youtube] b30GaoWn1WA: Downloading webpage
+[youtube] b30GaoWn1WA: Downloading android player API JSON
+[info] b30GaoWn1WA: Downloading 1 format(s): 18
+[download] Destination: S:\algorithmic-gamer-resources\videos\b30GaoWn1WA\video.mp4
+[download] 100% of  199.91MiB in 00:00:06 at 31.17MiB/s  
+[youtube] mufI4gMN91I: Downloading webpage
+[youtube] mufI4gMN91I: Downloading android player API JSON
+[info] mufI4gMN91I: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\mufI4gMN91I\video.mp4
+[download] 100% of  152.93MiB in 00:00:06 at 22.73MiB/s  
+[youtube] DpSdlaQnYuY: Downloading webpage
+[youtube] DpSdlaQnYuY: Downloading android player API JSON
+[info] DpSdlaQnYuY: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\DpSdlaQnYuY\video.mp4
+[download] 100% of  111.73MiB in 00:00:03 at 35.17MiB/s  
+[youtube] 4f7gMyEVVOE: Downloading webpage
+[youtube] 4f7gMyEVVOE: Downloading android player API JSON
+[info] 4f7gMyEVVOE: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\4f7gMyEVVOE\video.mp4
+[download] 100% of   40.56MiB in 00:00:01 at 24.83MiB/s  
+[youtube] RY6YLHbrFEk: Downloading webpage
+[youtube] RY6YLHbrFEk: Downloading android player API JSON
+[info] RY6YLHbrFEk: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\RY6YLHbrFEk\video.mp4
+[download] 100% of   40.35MiB in 00:00:01 at 25.32MiB/s    
+[youtube] k6FCVrmC6is: Downloading webpage
+[youtube] k6FCVrmC6is: Downloading android player API JSON
+[youtube] k6FCVrmC6is: Downloading MPD manifest
+[youtube] k6FCVrmC6is: Downloading MPD manifest
+[info] k6FCVrmC6is: Downloading 1 format(s): 18
+[download] Destination: S:\algorithmic-gamer-resources\videos\k6FCVrmC6is\video.mp4
+[download] 100% of  178.24MiB in 00:00:04 at 39.06MiB/s  
+[youtube] 1ZVY_nAwzoY: Downloading webpage
+[youtube] 1ZVY_nAwzoY: Downloading android player API JSON
+[info] 1ZVY_nAwzoY: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\1ZVY_nAwzoY\video.mp4
+[download] 100% of  240.23MiB in 00:00:04 at 48.65MiB/s  
+[youtube] JlpvrbvlxrY: Downloading webpage
+[youtube] JlpvrbvlxrY: Downloading android player API JSON
+[info] JlpvrbvlxrY: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\JlpvrbvlxrY\video.mp4
+[download] 100% of  700.68MiB in 00:00:14 at 47.86MiB/s  
+[youtube] 07Itn2IdWHM: Downloading webpage
+[youtube] 07Itn2IdWHM: Downloading android player API JSON
+[info] 07Itn2IdWHM: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\07Itn2IdWHM\video.mp4
+[download] 100% of  242.43MiB in 00:00:06 at 40.34MiB/s  
+[youtube] x-w8gJP-9Gc: Downloading webpage
+[youtube] x-w8gJP-9Gc: Downloading android player API JSON
+[info] x-w8gJP-9Gc: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\x-w8gJP-9Gc\video.mp4
+[download] 100% of  612.50MiB in 00:00:19 at 31.68MiB/s  
+[youtube] l49Ehl4Eq6I: Downloading webpage
+[youtube] l49Ehl4Eq6I: Downloading android player API JSON
+[info] l49Ehl4Eq6I: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\l49Ehl4Eq6I\video.mp4
+[download] 100% of  128.78MiB in 00:00:07 at 16.93MiB/s  
+[youtube] 0FI_hOn-J9A: Downloading webpage
+[youtube] 0FI_hOn-J9A: Downloading android player API JSON
+[info] 0FI_hOn-J9A: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\0FI_hOn-J9A\video.mp4
+[download] 100% of   66.20MiB in 00:00:02 at 26.03MiB/s    
+[youtube] gwAGt-FLLwA: Downloading webpage
+[youtube] gwAGt-FLLwA: Downloading android player API JSON
+[info] gwAGt-FLLwA: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\gwAGt-FLLwA\video.mp4
+[download] 100% of  172.90MiB in 00:00:04 at 39.24MiB/s  
+[youtube] qCFPOujTOqY: Downloading webpage
+[youtube] qCFPOujTOqY: Downloading android player API JSON
+[info] qCFPOujTOqY: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\qCFPOujTOqY\video.mp4
+[download] 100% of  237.54MiB in 00:00:07 at 29.88MiB/s  
+[youtube] _EjDBljerLQ: Downloading webpage
+[youtube] _EjDBljerLQ: Downloading android player API JSON
+[info] _EjDBljerLQ: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\_EjDBljerLQ\video.mp4
+[download] 100% of  137.51MiB in 00:00:04 at 29.58MiB/s  
+[youtube] xqzjwVOukuw: Downloading webpage
+[youtube] xqzjwVOukuw: Downloading android player API JSON
+[info] xqzjwVOukuw: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\xqzjwVOukuw\video.mp4
+[download] 100% of  145.47MiB in 00:00:04 at 29.44MiB/s  
+[youtube] efkXF_3Alvs: Downloading webpage
+[youtube] efkXF_3Alvs: Downloading android player API JSON
+[info] efkXF_3Alvs: Downloading 1 format(s): 18
+[download] Destination: S:\algorithmic-gamer-resources\videos\efkXF_3Alvs\video.mp4</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[download] 100% of   43.42MiB in 00:00:01 at 25.73MiB/s  
+[youtube] DpSdlaQnYuY: Downloading webpage
+[youtube] DpSdlaQnYuY: Downloading android player API JSON
+[info] DpSdlaQnYuY: Downloading 1 format(s): 22
+[download] S:\algorithmic-gamer-resources\videos\DpSdlaQnYuY\video.mp4 has already been downloaded
+[download] 100% of  111.73MiB
+[youtube] LakQnOSgtys: Downloading webpage
+[youtube] LakQnOSgtys: Downloading android player API JSON
+[info] LakQnOSgtys: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\LakQnOSgtys\video.mp4
+[download] 100% of  257.50MiB in 00:00:05 at 47.94MiB/s  
+[youtube] RUgW2UdH-cI: Downloading webpage
+[youtube] RUgW2UdH-cI: Downloading android player API JSON
+[info] RUgW2UdH-cI: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\RUgW2UdH-cI\video.mp4
+[download] 100% of  512.96MiB in 00:00:13 at 38.88MiB/s  
+[youtube] Y7huvqSpqxg: Downloading webpage
+[youtube] Y7huvqSpqxg: Downloading android player API JSON
+[info] Y7huvqSpqxg: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\Y7huvqSpqxg\video.mp4
+[download] 100% of  292.05MiB in 00:00:09 at 32.34MiB/s  
+[youtube] 8o9owIAlISE: Downloading webpage
+[youtube] 8o9owIAlISE: Downloading android player API JSON
+[info] 8o9owIAlISE: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\8o9owIAlISE\video.mp4
+[download] 100% of    1.55GiB in 00:00:34 at 45.76MiB/s    
+[youtube] WAvN0EzEacU: Downloading webpage
+[youtube] WAvN0EzEacU: Downloading android player API JSON
+[info] WAvN0EzEacU: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\WAvN0EzEacU\video.mp4
+[download] 100% of   84.26MiB in 00:00:04 at 18.33MiB/s  
+[youtube] nqmvMIZCkZ4: Downloading webpage
+[youtube] nqmvMIZCkZ4: Downloading android player API JSON
+[info] nqmvMIZCkZ4: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\nqmvMIZCkZ4\video.mp4
+[download] 100% of   46.37MiB in 00:00:01 at 25.10MiB/s  
+[youtube] Wh4e2rV2I0I: Downloading webpage
+[youtube] Wh4e2rV2I0I: Downloading android player API JSON
+[info] Wh4e2rV2I0I: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\Wh4e2rV2I0I\video.mp4
+[download] 100% of  556.78MiB in 00:00:12 at 43.83MiB/s  
+[youtube] Wh4e2rV2I0I: Downloading webpage
+[youtube] Wh4e2rV2I0I: Downloading android player API JSON
+[info] Wh4e2rV2I0I: Downloading 1 format(s): 22
+[download] S:\algorithmic-gamer-resources\videos\Wh4e2rV2I0I\video.mp4 has already been downloaded
+[download] 100% of  556.78MiB
+[youtube] 2pC3-eCAdvs: Downloading webpage
+[youtube] 2pC3-eCAdvs: Downloading android player API JSON
+[info] 2pC3-eCAdvs: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\2pC3-eCAdvs\video.mp4
+[download] 100% of   63.36MiB in 00:00:02 at 28.54MiB/s  
+[youtube] TEhc3D6rIjE: Downloading webpage
+[youtube] TEhc3D6rIjE: Downloading android player API JSON
+[info] TEhc3D6rIjE: Downloading 1 format(s): 18
+[download] Destination: S:\algorithmic-gamer-resources\videos\TEhc3D6rIjE\video.mp4
+[download] 100% of  152.78MiB in 00:00:04 at 36.13MiB/s  
+[youtube] NYyduq1Arf4: Downloading webpage
+[youtube] NYyduq1Arf4: Downloading android player API JSON
+[info] NYyduq1Arf4: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\NYyduq1Arf4\video.mp4
+[download] 100% of   12.61MiB in 00:00:00 at 13.78MiB/s  
+[youtube] AsDgI6Ec3fQ: Downloading webpage
+[youtube] AsDgI6Ec3fQ: Downloading android player API JSON
+[info] AsDgI6Ec3fQ: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\AsDgI6Ec3fQ\video.mp4
+[download] 100% of   18.36MiB in 00:00:00 at 22.65MiB/s  
+[youtube] i1WO4TEAC1A: Downloading webpage
+[youtube] i1WO4TEAC1A: Downloading android player API JSON
+[info] i1WO4TEAC1A: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\i1WO4TEAC1A\video.mp4
+[download] 100% of  112.62MiB in 00:00:03 at 30.77MiB/s    
+[youtube] 7tQ8fbFsOUE: Downloading webpage
+[youtube] 7tQ8fbFsOUE: Downloading android player API JSON
+[info] 7tQ8fbFsOUE: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\7tQ8fbFsOUE\video.mp4
+[download] 100% of  186.70MiB in 00:00:04 at 40.55MiB/s    
+[youtube] vys7fI8qnYs: Downloading webpage
+[youtube] vys7fI8qnYs: Downloading android player API JSON
+[info] vys7fI8qnYs: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\vys7fI8qnYs\video.mp4
+[download] 100% of   98.14MiB in 00:00:04 at 24.15MiB/s  
+[youtube] ZoYc_ms1Py8: Downloading webpage
+[youtube] ZoYc_ms1Py8: Downloading android player API JSON
+[info] ZoYc_ms1Py8: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\ZoYc_ms1Py8\video.mp4
+[download] 100% of   66.81MiB in 00:00:02 at 29.68MiB/s  
+[youtube] GilJY3mDEPw: Downloading webpage
+[youtube] GilJY3mDEPw: Downloading android player API JSON
+[info] GilJY3mDEPw: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\GilJY3mDEPw\video.mp4
+[download] 100% of   76.85MiB in 00:00:03 at 22.37MiB/s  
+[youtube] LI1PGErtAjU: Downloading webpage
+[youtube] LI1PGErtAjU: Downloading android player API JSON
+[info] LI1PGErtAjU: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\LI1PGErtAjU\video.mp4
+[download] 100% of  239.88MiB in 00:00:06 at 36.96MiB/s  
+[youtube] 7nunOQymY0Q: Downloading webpage
+[youtube] 7nunOQymY0Q: Downloading android player API JSON
+[info] 7nunOQymY0Q: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\7nunOQymY0Q\video.mp4
+[download] 100% of  109.39MiB in 00:00:02 at 37.24MiB/s  
+[youtube] oXgcAECcpAg: Downloading webpage
+[youtube] oXgcAECcpAg: Downloading android player API JSON
+[info] oXgcAECcpAg: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\oXgcAECcpAg\video.mp4
+[download] 100% of   96.09MiB in 00:00:02 at 35.14MiB/s  
+[youtube] 4RURKTmVR7w: Downloading webpage
+[youtube] 4RURKTmVR7w: Downloading android player API JSON
+[info] 4RURKTmVR7w: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\4RURKTmVR7w\video.mp4
+[download] 100% of   32.59MiB in 00:00:01 at 23.85MiB/s  
+[youtube] auXfAHHNSFo: Downloading webpage
+[youtube] auXfAHHNSFo: Downloading android player API JSON
+[info] auXfAHHNSFo: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\auXfAHHNSFo\video.mp4
+[download] 100% of   20.80MiB in 00:00:01 at 19.94MiB/s    
+[youtube] m84msT24PDs: Downloading webpage
+[youtube] m84msT24PDs: Downloading android player API JSON
+[info] m84msT24PDs: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\m84msT24PDs\video.mp4
+[download] 100% of  338.20MiB in 00:00:08 at 38.79MiB/s  
+[youtube] HMajuCFIQr4: Downloading webpage
+[youtube] HMajuCFIQr4: Downloading android player API JSON
+[info] HMajuCFIQr4: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\HMajuCFIQr4\video.mp4
+[download] 100% of   54.25MiB in 00:00:01 at 34.02MiB/s  
+[youtube] b30GaoWn1WA: Downloading webpage
+[youtube] b30GaoWn1WA: Downloading android player API JSON
+[info] b30GaoWn1WA: Downloading 1 format(s): 18
+[download] S:\algorithmic-gamer-resources\videos\b30GaoWn1WA\video.mp4 has already been downloaded
+[download] 100% of  199.91MiB
+[youtube] dWaDwAZffW8: Downloading webpage
+[youtube] dWaDwAZffW8: Downloading android player API JSON
+[info] dWaDwAZffW8: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\dWaDwAZffW8\video.mp4
+[download] 100% of  270.91MiB in 00:00:07 at 36.23MiB/s    
+[youtube] 1ZVY_nAwzoY: Downloading webpage
+[youtube] 1ZVY_nAwzoY: Downloading android player API JSON
+[info] 1ZVY_nAwzoY: Downloading 1 format(s): 22
+[download] S:\algorithmic-gamer-resources\videos\1ZVY_nAwzoY\video.mp4 has already been downloaded
+[download] 100% of  240.23MiB
+[youtube] mNP9jO7EHMo: Downloading webpage</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[youtube] mNP9jO7EHMo: Downloading android player API JSON
+[youtube] mNP9jO7EHMo: Downloading MPD manifest
+[youtube] mNP9jO7EHMo: Downloading MPD manifest
+[info] mNP9jO7EHMo: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\mNP9jO7EHMo\video.mp4
+[download] 100% of  602.80MiB in 00:00:15 at 39.96MiB/s  
+[youtube] QlVmUnt9SVQ: Downloading webpage
+[youtube] QlVmUnt9SVQ: Downloading android player API JSON
+[youtube] QlVmUnt9SVQ: Downloading MPD manifest
+[youtube] QlVmUnt9SVQ: Downloading MPD manifest
+[info] QlVmUnt9SVQ: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\QlVmUnt9SVQ\video.mp4
+[download] 100% of  457.38MiB in 00:00:12 at 36.94MiB/s    
+[youtube] QlVmUnt9SVQ: Downloading webpage
+[youtube] QlVmUnt9SVQ: Downloading android player API JSON
+[youtube] QlVmUnt9SVQ: Downloading MPD manifest
+[youtube] QlVmUnt9SVQ: Downloading MPD manifest
+[info] QlVmUnt9SVQ: Downloading 1 format(s): 22
+[download] S:\algorithmic-gamer-resources\videos\QlVmUnt9SVQ\video.mp4 has already been downloaded
+[download] 100% of  457.38MiB
+[youtube] T6f1vJT0yrU: Downloading webpage
+[youtube] T6f1vJT0yrU: Downloading android player API JSON
+[youtube] T6f1vJT0yrU: Downloading MPD manifest
+[youtube] T6f1vJT0yrU: Downloading MPD manifest
+[info] T6f1vJT0yrU: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\T6f1vJT0yrU\video.mp4
+[download] 100% of  446.64MiB in 00:00:09 at 47.10MiB/s  
+[youtube] 9Ch8nH6BxsA: Downloading webpage
+[youtube] 9Ch8nH6BxsA: Downloading android player API JSON
+[info] 9Ch8nH6BxsA: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\9Ch8nH6BxsA\video.mp4
+[download] 100% of  292.94MiB in 00:00:10 at 28.37MiB/s  
+[youtube] eYXh7-Cdvk4: Downloading webpage
+[youtube] eYXh7-Cdvk4: Downloading android player API JSON
+[info] eYXh7-Cdvk4: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\eYXh7-Cdvk4\video.mp4
+[download] 100% of  350.36MiB in 00:00:09 at 38.83MiB/s  
+[youtube] DjRiaWKjR6E: Downloading webpage
+[youtube] DjRiaWKjR6E: Downloading android player API JSON
+[info] DjRiaWKjR6E: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\DjRiaWKjR6E\video.mp4
+[download] 100% of  666.48MiB in 00:00:15 at 42.84MiB/s  
+[youtube] DWRSDcWWVNE: Downloading webpage
+[youtube] DWRSDcWWVNE: Downloading android player API JSON
+[info] DWRSDcWWVNE: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\DWRSDcWWVNE\video.mp4
+[download] 100% of  694.07MiB in 00:00:19 at 35.75MiB/s    
+[youtube] oWpgpSqMSxQ: Downloading webpage
+[youtube] oWpgpSqMSxQ: Downloading android player API JSON
+[info] oWpgpSqMSxQ: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\oWpgpSqMSxQ\video.mp4
+[download] 100% of    1.01GiB in 00:00:27 at 37.89MiB/s    
+[youtube] leFNW1pApZ4: Downloading webpage
+[youtube] leFNW1pApZ4: Downloading android player API JSON
+[youtube] leFNW1pApZ4: Downloading MPD manifest
+[youtube] leFNW1pApZ4: Downloading MPD manifest
+[info] leFNW1pApZ4: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\leFNW1pApZ4\video.mp4
+[download] 100% of  596.43MiB in 00:00:16 at 36.73MiB/s    
+[youtube] cZSYPZOB0DY: Downloading webpage
+[youtube] cZSYPZOB0DY: Downloading android player API JSON
+[youtube] cZSYPZOB0DY: Downloading MPD manifest
+[youtube] cZSYPZOB0DY: Downloading MPD manifest
+[info] cZSYPZOB0DY: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\cZSYPZOB0DY\video.mp4
+[download] 100% of  328.11MiB in 00:00:06 at 47.28MiB/s    
+[youtube] kIPigLp_AU8: Downloading webpage
+[youtube] kIPigLp_AU8: Downloading android player API JSON
+[info] kIPigLp_AU8: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\kIPigLp_AU8\video.mp4
+[download] 100% of  151.05MiB in 00:00:03 at 41.63MiB/s    
+[youtube] 5nD00S05krA: Downloading webpage
+[youtube] 5nD00S05krA: Downloading android player API JSON
+[youtube] 5nD00S05krA: Downloading MPD manifest
+[youtube] 5nD00S05krA: Downloading MPD manifest
+[info] 5nD00S05krA: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\5nD00S05krA\video.mp4
+[download] 100% of  542.49MiB in 00:00:15 at 35.42MiB/s  
+[youtube] SFAfZMttRGU: Downloading webpage
+[youtube] SFAfZMttRGU: Downloading android player API JSON
+[youtube] SFAfZMttRGU: Downloading MPD manifest
+[youtube] SFAfZMttRGU: Downloading MPD manifest
+[info] SFAfZMttRGU: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\SFAfZMttRGU\video.mp4
+[download] 100% of  578.15MiB in 00:00:11 at 49.90MiB/s    
+[youtube] PGURRMK_6-4: Downloading webpage
+[youtube] PGURRMK_6-4: Downloading android player API JSON
+[youtube] PGURRMK_6-4: Downloading MPD manifest
+[youtube] PGURRMK_6-4: Downloading MPD manifest
+[info] PGURRMK_6-4: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\PGURRMK_6-4\video.mp4
+[download] 100% of  503.31MiB in 00:00:13 at 38.17MiB/s  
+[youtube] _IvuYZmeNfc: Downloading webpage
+[youtube] _IvuYZmeNfc: Downloading android player API JSON
+[youtube] _IvuYZmeNfc: Downloading MPD manifest
+[youtube] _IvuYZmeNfc: Downloading MPD manifest
+[info] _IvuYZmeNfc: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\_IvuYZmeNfc\video.mp4
+[download] 100% of  567.12MiB in 00:00:15 at 36.89MiB/s    
+[youtube] PccFW848-hc: Downloading webpage
+[youtube] PccFW848-hc: Downloading android player API JSON
+[info] PccFW848-hc: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\PccFW848-hc\video.mp4
+[download] 100% of  705.40MiB in 00:00:18 at 37.99MiB/s    
+[youtube] _IvuYZmeNfc: Downloading webpage
+[youtube] _IvuYZmeNfc: Downloading android player API JSON
+[youtube] _IvuYZmeNfc: Downloading MPD manifest
+[youtube] _IvuYZmeNfc: Downloading MPD manifest
+[info] _IvuYZmeNfc: Downloading 1 format(s): 22
+[download] S:\algorithmic-gamer-resources\videos\_IvuYZmeNfc\video.mp4 has already been downloaded
+[download] 100% of  567.12MiB
+[youtube] CRWZQ1Qrw10: Downloading webpage
+[youtube] CRWZQ1Qrw10: Downloading android player API JSON
+[youtube] CRWZQ1Qrw10: Downloading MPD manifest
+[youtube] CRWZQ1Qrw10: Downloading MPD manifest
+[info] CRWZQ1Qrw10: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\CRWZQ1Qrw10\video.mp4
+[download] 100% of  446.57MiB in 00:00:10 at 42.30MiB/s  
+[youtube] _IvuYZmeNfc: Downloading webpage
+[youtube] _IvuYZmeNfc: Downloading android player API JSON
+[youtube] _IvuYZmeNfc: Downloading MPD manifest
+[youtube] _IvuYZmeNfc: Downloading MPD manifest
+[info] _IvuYZmeNfc: Downloading 1 format(s): 22
+[download] S:\algorithmic-gamer-resources\videos\_IvuYZmeNfc\video.mp4 has already been downloaded
+[download] 100% of  567.12MiB
+[youtube] 9zRYhpsgy60: Downloading webpage
+[youtube] 9zRYhpsgy60: Downloading android player API JSON
+[youtube] 9zRYhpsgy60: Downloading MPD manifest
+[youtube] 9zRYhpsgy60: Downloading MPD manifest
+[info] 9zRYhpsgy60: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\9zRYhpsgy60\video.mp4
+[download] 100% of  195.08MiB in 00:00:04 at 40.10MiB/s  
+[youtube] gdP_WYxQXpk: Downloading webpage
+[youtube] gdP_WYxQXpk: Downloading android player API JSON
+[info] gdP_WYxQXpk: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\gdP_WYxQXpk\video.mp4
+[download] 100% of   27.17MiB in 00:00:01 at 23.88MiB/s  
+[youtube] udgX7toNJIM: Downloading webpage
+[youtube] udgX7toNJIM: Downloading android player API JSON
+[info] udgX7toNJIM: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\udgX7toNJIM\video.mp4
+[download] 100% of   27.77MiB in 00:00:01 at 19.51MiB/s  
+[youtube] dBEpiM2vFZg: Downloading webpage
+[youtube] dBEpiM2vFZg: Downloading android player API JSON
+[info] dBEpiM2vFZg: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\dBEpiM2vFZg\video.mp4</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[download] 100% of   31.93MiB in 00:00:01 at 22.53MiB/s  
+[youtube] B-4--16sCIg: Downloading webpage
+[youtube] B-4--16sCIg: Downloading android player API JSON
+[youtube] B-4--16sCIg: Downloading MPD manifest
+[youtube] B-4--16sCIg: Downloading MPD manifest
+[info] B-4--16sCIg: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\B-4--16sCIg\video.mp4
+[download] 100% of  539.45MiB in 00:00:11 at 47.05MiB/s  
+[youtube] -D7wFoBVZJ8: Downloading webpage
+[youtube] -D7wFoBVZJ8: Downloading android player API JSON
+[youtube] -D7wFoBVZJ8: Downloading MPD manifest
+[youtube] -D7wFoBVZJ8: Downloading MPD manifest
+[info] -D7wFoBVZJ8: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\-D7wFoBVZJ8\video.mp4
+[download] 100% of   28.74MiB in 00:00:01 at 19.20MiB/s  
+[youtube] e30LstNycVQ: Downloading webpage
+[youtube] e30LstNycVQ: Downloading android player API JSON
+[youtube] e30LstNycVQ: Downloading MPD manifest
+[youtube] e30LstNycVQ: Downloading MPD manifest
+[info] e30LstNycVQ: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\e30LstNycVQ\video.mp4
+[download] 100% of  393.88MiB in 00:00:15 at 24.90MiB/s  
+[youtube] -D7wFoBVZJ8: Downloading webpage
+[youtube] -D7wFoBVZJ8: Downloading android player API JSON
+[youtube] -D7wFoBVZJ8: Downloading MPD manifest
+[youtube] -D7wFoBVZJ8: Downloading MPD manifest
+[info] -D7wFoBVZJ8: Downloading 1 format(s): 22
+[download] S:\algorithmic-gamer-resources\videos\-D7wFoBVZJ8\video.mp4 has already been downloaded
+[download] 100% of   28.74MiB
+[youtube] e30LstNycVQ: Downloading webpage
+[youtube] e30LstNycVQ: Downloading android player API JSON
+[youtube] e30LstNycVQ: Downloading MPD manifest
+[youtube] e30LstNycVQ: Downloading MPD manifest
+[info] e30LstNycVQ: Downloading 1 format(s): 22
+[download] S:\algorithmic-gamer-resources\videos\e30LstNycVQ\video.mp4 has already been downloaded
+[download] 100% of  393.88MiB
+[youtube] rHneKtLGtjE: Downloading webpage
+[youtube] rHneKtLGtjE: Downloading android player API JSON
+[info] rHneKtLGtjE: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\rHneKtLGtjE\video.mp4
+[download] 100% of   37.01MiB in 00:00:01 at 22.89MiB/s  
+[youtube] wnyOtBQ4GxA: Downloading webpage
+[youtube] wnyOtBQ4GxA: Downloading android player API JSON
+[info] wnyOtBQ4GxA: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\wnyOtBQ4GxA\video.mp4
+[download] 100% of   39.09MiB in 00:00:01 at 27.89MiB/s  
+[youtube] 8RuIoEmvb_o: Downloading webpage
+[youtube] 8RuIoEmvb_o: Downloading android player API JSON
+[info] 8RuIoEmvb_o: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\8RuIoEmvb_o\video.mp4
+[download] 100% of   24.91MiB in 00:00:01 at 23.57MiB/s    
+[youtube] ZuEZHgr2D4o: Downloading webpage
+[youtube] ZuEZHgr2D4o: Downloading android player API JSON
+[info] ZuEZHgr2D4o: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\ZuEZHgr2D4o\video.mp4
+[download] 100% of  114.94MiB in 00:00:02 at 39.01MiB/s  
+[youtube] ILoIMJOuiHg: Downloading webpage
+[youtube] ILoIMJOuiHg: Downloading android player API JSON
+[info] ILoIMJOuiHg: Downloading 1 format(s): 18
+[download] Destination: S:\algorithmic-gamer-resources\videos\ILoIMJOuiHg\video.mp4
+[download] 100% of  223.03MiB in 00:00:11 at 20.04MiB/s    
+[youtube] pExd1m85Om8: Downloading webpage
+[youtube] pExd1m85Om8: Downloading android player API JSON
+[info] pExd1m85Om8: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\pExd1m85Om8\video.mp4
+[download] 100% of   61.41MiB in 00:00:02 at 25.87MiB/s  
+[youtube] SLtB9HPVY18: Downloading webpage
+[youtube] SLtB9HPVY18: Downloading android player API JSON
+[info] SLtB9HPVY18: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\SLtB9HPVY18\video.mp4
+[download] 100% of   23.09MiB in 00:00:01 at 21.08MiB/s    
+[youtube] Wjs7DYUS98o: Downloading webpage
+[youtube] Wjs7DYUS98o: Downloading android player API JSON
+[info] Wjs7DYUS98o: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\Wjs7DYUS98o\video.mp4
+[download] 100% of   59.12MiB in 00:00:02 at 26.63MiB/s  
+[youtube] -RqMbaohYeY: Downloading webpage
+[youtube] -RqMbaohYeY: Downloading android player API JSON
+[info] -RqMbaohYeY: Downloading 1 format(s): 18
+[download] Destination: S:\algorithmic-gamer-resources\videos\-RqMbaohYeY\video.mp4
+[download] 100% of    9.20MiB in 00:00:00 at 12.80MiB/s  
+[youtube] 7TpCrO8tyCg: Downloading webpage
+[youtube] 7TpCrO8tyCg: Downloading android player API JSON
+[info] 7TpCrO8tyCg: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\7TpCrO8tyCg\video.mp4
+[download] 100% of   20.13MiB in 00:00:01 at 15.28MiB/s    
+[youtube] dCfalwm3Rqw: Downloading webpage
+[youtube] dCfalwm3Rqw: Downloading android player API JSON
+[info] dCfalwm3Rqw: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\dCfalwm3Rqw\video.mp4
+[download] 100% of  167.54MiB in 00:00:07 at 22.92MiB/s  
+[youtube] gdP_WYxQXpk: Downloading webpage
+[youtube] gdP_WYxQXpk: Downloading android player API JSON
+[info] gdP_WYxQXpk: Downloading 1 format(s): 22
+[download] S:\algorithmic-gamer-resources\videos\gdP_WYxQXpk\video.mp4 has already been downloaded
+[download] 100% of   27.17MiB
+[youtube] FUm6zk3wWew: Downloading webpage
+[youtube] FUm6zk3wWew: Downloading android player API JSON
+[info] FUm6zk3wWew: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\FUm6zk3wWew\video.mp4
+[download] 100% of  923.38MiB in 00:00:26 at 34.29MiB/s    
+[youtube] 0uJF-hz0PV0: Downloading webpage
+[youtube] 0uJF-hz0PV0: Downloading android player API JSON
+[info] 0uJF-hz0PV0: Downloading 1 format(s): 18
+[download] Destination: S:\algorithmic-gamer-resources\videos\0uJF-hz0PV0\video.mp4
+[download] 100% of   30.65MiB in 00:00:01 at 23.81MiB/s  
+[youtube] SWDo_q6PFQs: Downloading webpage
+[youtube] SWDo_q6PFQs: Downloading android player API JSON
+[info] SWDo_q6PFQs: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\SWDo_q6PFQs\video.mp4
+[download] 100% of  164.59MiB in 00:00:14 at 11.09MiB/s    
+[youtube] SWDo_q6PFQs: Downloading webpage
+[youtube] SWDo_q6PFQs: Downloading android player API JSON
+[info] SWDo_q6PFQs: Downloading 1 format(s): 22
+[download] S:\algorithmic-gamer-resources\videos\SWDo_q6PFQs\video.mp4 has already been downloaded
+[download] 100% of  164.59MiB
+[youtube] HXFjJ8nP18w: Downloading webpage
+[youtube] HXFjJ8nP18w: Downloading android player API JSON
+[info] HXFjJ8nP18w: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\HXFjJ8nP18w\video.mp4
+[download] 100% of  239.13MiB in 00:00:07 at 31.71MiB/s    
+[youtube] eIJcEKJY05I: Downloading webpage
+[youtube] eIJcEKJY05I: Downloading android player API JSON
+[info] eIJcEKJY05I: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\eIJcEKJY05I\video.mp4
+[download] 100% of  444.70MiB in 00:00:11 at 37.22MiB/s  
+[youtube] awsDyOBC3mM: Downloading webpage
+[youtube] awsDyOBC3mM: Downloading android player API JSON
+[info] awsDyOBC3mM: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\awsDyOBC3mM\video.mp4
+[download] 100% of  186.33MiB in 00:00:43 at 4.26MiB/s     
+[youtube] M3ERRDMGCys: Downloading webpage
+[youtube] M3ERRDMGCys: Downloading android player API JSON
+[youtube] M3ERRDMGCys: Downloading MPD manifest
+[youtube] M3ERRDMGCys: Downloading MPD manifest
+[info] M3ERRDMGCys: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\M3ERRDMGCys\video.mp4
+[download] 100% of  266.11MiB in 00:01:00 at 4.42MiB/s     
+[youtube] MtvrRcivs-g: Downloading webpage
+[youtube] MtvrRcivs-g: Downloading android player API JSON
+[youtube] MtvrRcivs-g: Downloading MPD manifest
+[youtube] MtvrRcivs-g: Downloading MPD manifest
+[info] MtvrRcivs-g: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\MtvrRcivs-g\video.mp4</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[download] 100% of  449.92MiB in 00:00:52 at 8.62MiB/s   
+[youtube] g18DE4-dxrc: Downloading webpage
+[youtube] g18DE4-dxrc: Downloading android player API JSON
+[youtube] g18DE4-dxrc: Downloading MPD manifest
+[youtube] g18DE4-dxrc: Downloading MPD manifest
+[info] g18DE4-dxrc: Downloading 1 format(s): 22
+[download] Destination: S:\algorithmic-gamer-resources\videos\g18DE4-dxrc\video.mp4
+[download] 100% of  198.99MiB in 00:00:20 at 9.74MiB/s      </code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

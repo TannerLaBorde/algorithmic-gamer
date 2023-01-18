@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.313">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>algorithmic-gamer</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="algorithmic-gamer">
+<meta property="og:description" content="algorithmic-gamer is a collection of functionality for making artificial intelligences that can play games. currently built for windows.">
+<meta property="og:site-name" content="algorithmic-gamer">
+<meta name="twitter:title" content="algorithmic-gamer">
+<meta name="twitter:description" content="algorithmic-gamer is a collection of functionality for making artificial intelligences that can play games. currently built for windows.">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">algorithmic-gamer</span>
+    </a>
+  </div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">algorithmic-gamer</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link active">algorithmic-gamer</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">action</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./action/base_action.html" class="sidebar-item-text sidebar-link">Action</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">observation</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./observation/vision.html" class="sidebar-item-text sidebar-link">Vision</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./observation/sound.html" class="sidebar-item-text sidebar-link">Sound</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./observation/gamepad.html" class="sidebar-item-text sidebar-link">Gamepad</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./observation/discrete_events.html" class="sidebar-item-text sidebar-link">Discrete Events</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">utility</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./utility/application_fuzzer.html" class="sidebar-item-text sidebar-link">Application Fuzzer</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./utility/data_utils.html" class="sidebar-item-text sidebar-link">Data Utils</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./utility/types.html" class="sidebar-item-text sidebar-link">Types</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./utility/video_downloader.html" class="sidebar-item-text sidebar-link">Video Downloader</a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#how-to-install" id="toc-how-to-install" class="nav-link active" data-scroll-target="#how-to-install">How to Install</a></li>
+  <li><a href="#example-usage" id="toc-example-usage" class="nav-link" data-scroll-target="#example-usage">Example usage</a>
+  <ul class="collapse">
+  <li><a href="#vision" id="toc-vision" class="nav-link" data-scroll-target="#vision">vision</a></li>
+  <li><a href="#sound-observation" id="toc-sound-observation" class="nav-link" data-scroll-target="#sound-observation">sound observation</a></li>
+  <li><a href="#gamepad-observation" id="toc-gamepad-observation" class="nav-link" data-scroll-target="#gamepad-observation">gamepad observation</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/TannerLaBorde/algorithmic-gamer/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">algorithmic-gamer</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<p>algorithmic-gamer is a collection of functionality for making artificial intelligences that can play games. currently built for windows. Vision from any application or a defined region of your screen, collecting observation episodes from game play and enables your model to interact with the game world. It is still a wip, feel free to submit changes. this project is built utilizing <a href="https://github.com/fastai/nbdev">nbdev</a></p>
+<section id="how-to-install" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-install">How to Install</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/TannerLaBorde/algorithmic-gamer.git</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-e</span> <span class="st">'.[dev]'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="example-usage" class="level2">
+<h2 class="anchored" data-anchor-id="example-usage">Example usage</h2>
+<section id="vision" class="level3">
+<h3 class="anchored" data-anchor-id="vision">vision</h3>
+<section id="win32_view-region" class="level4">
+<h4 class="anchored" data-anchor-id="win32_view-region">win32_view region</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>reg <span class="op">=</span> Region(left<span class="op">=</span><span class="dv">600</span>, top<span class="op">=</span><span class="dv">400</span>, right<span class="op">=</span><span class="dv">1400</span>, bottom<span class="op">=</span><span class="dv">1000</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> win32_view(reg)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>img.shape, plt.imshow(img)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>((601, 801, 3), &lt;matplotlib.image.AxesImage&gt;)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-2-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="win32_view-window" class="level4">
+<h4 class="anchored" data-anchor-id="win32_view-window">win32_view Window</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>win <span class="op">=</span> Window(app_name<span class="op">=</span>fuzzy_app(<span class="st">'shannon'</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>img2 <span class="op">=</span> win32_view(win)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>img2.shape, fuzzy_app(<span class="st">'shannon'</span>), plt.imshow(img2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>((184, 261, 3), &lt;matplotlib.image.AxesImage&gt;)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-3-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="dxcam_view" class="level4">
+<h4 class="anchored" data-anchor-id="dxcam_view">dxcam_view</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>cam <span class="op">=</span> create_dxcam()</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>img3 <span class="op">=</span> dxcam_view(cam, location<span class="op">=</span>reg)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>img3.shape, plt.imshow(img3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>screencapture of desktop at Region(left=600, top=400, right=1400, bottom=1000)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>&lt;matplotlib.image.AxesImage&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-4-output-3.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="sound-observation" class="level3">
+<h3 class="anchored" data-anchor-id="sound-observation">sound observation</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>audio_sequence <span class="op">=</span> record_audio(duration<span class="op">=</span><span class="dv">3</span>, normalize<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>plt.plot(audio_sequence.data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="index_files/figure-html/cell-5-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="gamepad-observation" class="level3">
+<h3 class="anchored" data-anchor-id="gamepad-observation">gamepad observation</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>record_gamepad_events(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>[GamepadEventObservation(timestamp=1674069718.6573284, code='ABS_X', state=0.013000885036774804),
+ GamepadEventObservation(timestamp=1674069718.6573284, code='ABS_Y', state=-0.02914517654957732),
+ GamepadEventObservation(timestamp=1674069718.6573284, code='ABS_RX', state=0.0010681478316599017),
+ GamepadEventObservation(timestamp=1674069718.6573284, code='ABS_RY', state=0.03607287820062868),
+ GamepadEventObservation(timestamp=1674069718.7843282, code='ABS_X', state=-0.05496383556627094),
+ GamepadEventObservation(timestamp=1674069718.7923286, code='ABS_X', state=-0.2919705801568651),
+ GamepadEventObservation(timestamp=1674069718.8083282, code='ABS_X', state=-0.5370036927396465),
+ GamepadEventObservation(timestamp=1674069718.8083282, code='ABS_Y', state=0.02816858424634541),
+ GamepadEventObservation(timestamp=1674069718.8163283, code='BTN_WEST', state=1),
+ GamepadEventObservation(timestamp=1674069718.8243287, code='ABS_X', state=-0.7868587298196356),
+ GamepadEventObservation(timestamp=1674069718.832328, code='ABS_Y', state=0.10403759880367443),
+ GamepadEventObservation(timestamp=1674069718.8403282, code='ABS_X', state=-1.000030518509476),
+ GamepadEventObservation(timestamp=1674069718.848328, code='ABS_Y', state=0.1586657307657094),
+ GamepadEventObservation(timestamp=1674069718.8803282, code='ABS_Y', state=0.21689504684591204),
+ GamepadEventObservation(timestamp=1674069718.9443278, code='BTN_WEST', state=0),
+ GamepadEventObservation(timestamp=1674069718.9763281, code='ABS_X', state=-0.9474776451918089),
+ GamepadEventObservation(timestamp=1674069718.984328, code='ABS_X', state=-0.7006744590594195),
+ GamepadEventObservation(timestamp=1674069719.0003278, code='ABS_X', state=-0.4203314310129093),
+ GamepadEventObservation(timestamp=1674069719.016328, code='ABS_X', state=0.0004882961516159551),
+ GamepadEventObservation(timestamp=1674069719.016328, code='ABS_Y', state=0.0009155552842799158),
+ GamepadEventObservation(timestamp=1674069719.192388, code='ABS_Y', state=-0.06854457228308969),
+ GamepadEventObservation(timestamp=1674069719.2003884, code='ABS_Y', state=-0.32364879299295024),
+ GamepadEventObservation(timestamp=1674069719.2163885, code='ABS_X', state=0.05896176030762658),
+ GamepadEventObservation(timestamp=1674069719.2163885, code='ABS_Y', state=-0.6704000976592304),
+ GamepadEventObservation(timestamp=1674069719.2323883, code='ABS_X', state=0.12759788811914427),
+ GamepadEventObservation(timestamp=1674069719.2323883, code='ABS_Y', state=-1.000030518509476),
+ GamepadEventObservation(timestamp=1674069719.2483888, code='ABS_X', state=0.17777031769768364),
+ GamepadEventObservation(timestamp=1674069719.3523881, code='ABS_X', state=0.23184911648915066),
+ GamepadEventObservation(timestamp=1674069719.3843882, code='ABS_X', state=0.3053682058168279),
+ GamepadEventObservation(timestamp=1674069719.400388, code='ABS_X', state=0.5694143498031556),
+ GamepadEventObservation(timestamp=1674069719.4163883, code='ABS_X', state=0.7994018372142705),
+ GamepadEventObservation(timestamp=1674069719.4163883, code='ABS_Y', state=-0.7559739982299265),
+ GamepadEventObservation(timestamp=1674069719.432388, code='ABS_Y', state=-0.5139622180852688),
+ GamepadEventObservation(timestamp=1674069719.4403882, code='ABS_X', state=0.8779869991149633),
+ GamepadEventObservation(timestamp=1674069719.4483888, code='ABS_X', state=1.0),
+ GamepadEventObservation(timestamp=1674069719.4483888, code='ABS_Y', state=-0.4610431226538896),
+ GamepadEventObservation(timestamp=1674069719.4643881, code='ABS_Y', state=-0.2097842341380047),
+ GamepadEventObservation(timestamp=1674069719.488388, code='ABS_Y', state=-0.1576281014435255),
+ GamepadEventObservation(timestamp=1674069719.5043883, code='ABS_Y', state=-0.10596026490066225),
+ GamepadEventObservation(timestamp=1674069719.5203884, code='ABS_Y', state=-0.05258339182714316),
+ GamepadEventObservation(timestamp=1674069719.5363884, code='ABS_Y', state=-0.00027466658528397473),
+ GamepadEventObservation(timestamp=1674069719.5603883, code='ABS_Y', state=0.07168797875911741),
+ GamepadEventObservation(timestamp=1674069719.5763884, code='ABS_Y', state=0.12329477828302866),
+ GamepadEventObservation(timestamp=1674069719.5923884, code='ABS_X', state=0.7098910489211707),
+ GamepadEventObservation(timestamp=1674069719.5923884, code='ABS_Y', state=0.37879573961607715),
+ GamepadEventObservation(timestamp=1674069719.6083882, code='ABS_X', state=0.35813470870082703),
+ GamepadEventObservation(timestamp=1674069719.6243885, code='ABS_X', state=0.3077486495559557),
+ GamepadEventObservation(timestamp=1674069719.6243885, code='ABS_Y', state=0.4336680196539201),
+ GamepadEventObservation(timestamp=1674069719.6403883, code='ABS_X', state=0.2305063020722068),
+ GamepadEventObservation(timestamp=1674069719.6483884, code='ABS_X', state=0.021362956633198035),
+ GamepadEventObservation(timestamp=1674069719.6883886, code='ABS_X', state=-0.034638508255256814),
+ GamepadEventObservation(timestamp=1674069719.6883886, code='ABS_Y', state=0.3681447798089541),
+ GamepadEventObservation(timestamp=1674069719.7043881, code='ABS_Y', state=0.30973235267189553),
+ GamepadEventObservation(timestamp=1674069719.7283883, code='ABS_Y', state=0.2542802209540086),
+ GamepadEventObservation(timestamp=1674069719.8643885, code='BTN_TL', state=1),
+ GamepadEventObservation(timestamp=1674069720.0003881, code='ABS_X', state=-0.08511612292855616),
+ GamepadEventObservation(timestamp=1674069720.0003881, code='ABS_Y', state=0.2020630512405774),
+ GamepadEventObservation(timestamp=1674069720.0243883, code='BTN_TL', state=0),
+ GamepadEventObservation(timestamp=1674069720.0243883, code='ABS_X', state=-0.36066774498733484),
+ GamepadEventObservation(timestamp=1674069720.0243883, code='ABS_Y', state=0.13077181310464797),
+ GamepadEventObservation(timestamp=1674069720.0403886, code='ABS_X', state=-0.4205755790887173),
+ GamepadEventObservation(timestamp=1674069720.0403886, code='ABS_Y', state=0.08069093905453657),
+ GamepadEventObservation(timestamp=1674069720.0483894, code='ABS_X', state=-0.6642658772545549),
+ GamepadEventObservation(timestamp=1674069720.056389, code='ABS_Y', state=0.027344584490493484),
+ GamepadEventObservation(timestamp=1674069720.0643883, code='ABS_X', state=-0.9037446211127048),
+ GamepadEventObservation(timestamp=1674069720.0723884, code='ABS_X', state=-1.000030518509476),
+ GamepadEventObservation(timestamp=1674069720.0723884, code='ABS_Y', state=-0.031006805627613147),
+ GamepadEventObservation(timestamp=1674069720.0959613, code='ABS_Y', state=-0.1011078218939787),
+ GamepadEventObservation(timestamp=1674069720.1278014, code='ABS_Y', state=-0.16782128360850856),
+ GamepadEventObservation(timestamp=1674069720.151959, code='ABS_Y', state=-0.22916348765526293),
+ GamepadEventObservation(timestamp=1674069720.1684961, code='ABS_Y', state=-0.2862025818659017),
+ GamepadEventObservation(timestamp=1674069720.184366, code='ABS_Y', state=-0.35840937528611105),
+ GamepadEventObservation(timestamp=1674069720.192443, code='ABS_X', state=-0.706625568407239),
+ GamepadEventObservation(timestamp=1674069720.2004728, code='ABS_Y', state=-0.4303109836115604),
+ GamepadEventObservation(timestamp=1674069720.2079825, code='ABS_X', state=-0.29923398541215246),
+ GamepadEventObservation(timestamp=1674069720.21598, code='ABS_X', state=-0.06781212805566576),
+ GamepadEventObservation(timestamp=1674069720.21598, code='ABS_Y', state=-0.48197882015442367),
+ GamepadEventObservation(timestamp=1674069720.2322934, code='ABS_X', state=0.22476882229071932),
+ GamepadEventObservation(timestamp=1674069720.2558017, code='ABS_X', state=0.2905362102114933),
+ GamepadEventObservation(timestamp=1674069720.2723439, code='ABS_X', state=0.5466475417340617),
+ GamepadEventObservation(timestamp=1674069720.2962987, code='ABS_X', state=0.6269417401654103),
+ GamepadEventObservation(timestamp=1674069720.3121297, code='ABS_X', state=0.6993011261329997),
+ GamepadEventObservation(timestamp=1674069720.32828, code='ABS_X', state=0.9374980925931578),
+ GamepadEventObservation(timestamp=1674069720.45628, code='ABS_Y', state=-0.4314706869716483),
+ GamepadEventObservation(timestamp=1674069720.48828, code='ABS_X', state=0.6540726950895718),
+ GamepadEventObservation(timestamp=1674069720.48828, code='ABS_Y', state=-0.35242774742881555),
+ GamepadEventObservation(timestamp=1674069720.4962804, code='ABS_X', state=0.3658558915982543),
+ GamepadEventObservation(timestamp=1674069720.4962804, code='ABS_Y', state=-0.086977752006592),
+ GamepadEventObservation(timestamp=1674069720.5042806, code='ABS_X', state=0.08880886257515183),
+ GamepadEventObservation(timestamp=1674069720.5363126, code='ABS_X', state=0.032624286629841),
+ GamepadEventObservation(timestamp=1674069720.5363126, code='ABS_Y', state=-0.03292947172460097),
+ GamepadEventObservation(timestamp=1674069720.5676267, code='ABS_X', state=-0.05304116946928312),
+ GamepadEventObservation(timestamp=1674069720.5762925, code='ABS_X', state=-0.3271279030732139),
+ GamepadEventObservation(timestamp=1674069720.5917993, code='ABS_X', state=-0.6416516617328409),
+ GamepadEventObservation(timestamp=1674069720.5917993, code='ABS_Y', state=0.02597125156407361),
+ GamepadEventObservation(timestamp=1674069720.6077998, code='ABS_X', state=-0.9058503982665487),
+ GamepadEventObservation(timestamp=1674069720.615656, code='ABS_X', state=-1.000030518509476),
+ GamepadEventObservation(timestamp=1674069720.631787, code='ABS_Y', state=0.08169804986724448),
+ GamepadEventObservation(timestamp=1674069720.6960611, code='ABS_Y', state=0.030365916928617207),
+ GamepadEventObservation(timestamp=1674069720.7243893, code='ABS_Y', state=-0.03173924985503708),
+ GamepadEventObservation(timestamp=1674069720.7443898, code='ABS_Y', state=-0.10345774712363048),
+ GamepadEventObservation(timestamp=1674069720.7683897, code='ABS_Y', state=-0.17139194921720025),
+ GamepadEventObservation(timestamp=1674069720.77639, code='ABS_X', state=-0.695974608600116),
+ GamepadEventObservation(timestamp=1674069720.79239, code='ABS_X', state=-0.2967925046540727),
+ GamepadEventObservation(timestamp=1674069720.79239, code='ABS_Y', state=-0.22315134128849148),
+ GamepadEventObservation(timestamp=1674069720.800389, code='ABS_X', state=-0.06451612903225806),
+ GamepadEventObservation(timestamp=1674069720.8163898, code='ABS_X', state=-0.011291848506118961),
+ GamepadEventObservation(timestamp=1674069720.8323898, code='ABS_X', state=0.051118503372295294),
+ GamepadEventObservation(timestamp=1674069720.8403895, code='ABS_X', state=0.2654194769127476),
+ GamepadEventObservation(timestamp=1674069720.84839, code='ABS_Y', state=-0.16113773003326518),
+ GamepadEventObservation(timestamp=1674069720.8563895, code='ABS_X', state=0.32425916318247017),
+ GamepadEventObservation(timestamp=1674069720.8643904, code='ABS_X', state=0.5784173100985748),
+ GamepadEventObservation(timestamp=1674069720.88839, code='ABS_X', state=0.652058473464156),
+ GamepadEventObservation(timestamp=1674069720.9043903, code='ABS_X', state=0.9312417981505783),
+ GamepadEventObservation(timestamp=1674069720.9196818, code='ABS_X', state=1.0),
+ GamepadEventObservation(timestamp=1674069721.0639672, code='ABS_X', state=0.7762993255409406),
+ GamepadEventObservation(timestamp=1674069721.0799673, code='ABS_X', state=0.3543504135258034),
+ GamepadEventObservation(timestamp=1674069721.0799673, code='ABS_Y', state=-0.10800500503555406),
+ GamepadEventObservation(timestamp=1674069721.0879676, code='ABS_X', state=0.1446272164067507),
+ GamepadEventObservation(timestamp=1674069721.1039672, code='ABS_Y', state=-0.05294961394085513),
+ GamepadEventObservation(timestamp=1674069721.111968, code='ABS_X', state=0.08752708517715994),
+ GamepadEventObservation(timestamp=1674069721.1439676, code='ABS_X', state=0.027222510452589496),
+ GamepadEventObservation(timestamp=1674069721.1679676, code='ABS_X', state=-0.03991821039460433),
+ GamepadEventObservation(timestamp=1674069721.1759684, code='ABS_X', state=-0.3051850947599719),
+ GamepadEventObservation(timestamp=1674069721.1759684, code='ABS_Y', state=0.004638813440351573),
+ GamepadEventObservation(timestamp=1674069721.1917138, code='ABS_X', state=-0.543473616748558),
+ GamepadEventObservation(timestamp=1674069721.2077131, code='ABS_X', state=-0.597674489577929),
+ GamepadEventObservation(timestamp=1674069721.215714, code='ABS_X', state=-0.8315073091830195),
+ GamepadEventObservation(timestamp=1674069721.2317135, code='ABS_X', state=-1.000030518509476),
+ GamepadEventObservation(timestamp=1674069721.2477133, code='ABS_Y', state=0.05639820551164281),
+ GamepadEventObservation(timestamp=1674069721.3117132, code='ABS_Y', state=0.0059511093478194525),
+ GamepadEventObservation(timestamp=1674069721.3437157, code='ABS_Y', state=-0.06772057252723777),
+ GamepadEventObservation(timestamp=1674069721.3517156, code='ABS_X', state=-0.6306649983214819),
+ GamepadEventObservation(timestamp=1674069721.3597157, code='ABS_X', state=-0.3218787194433424),
+ GamepadEventObservation(timestamp=1674069721.3597157, code='ABS_Y', state=-0.32236701559495834),
+ GamepadEventObservation(timestamp=1674069721.3677154, code='ABS_X', state=-0.017334513382366405),
+ GamepadEventObservation(timestamp=1674069721.3757162, code='ABS_X', state=0.20819727164525284),
+ GamepadEventObservation(timestamp=1674069721.3917687, code='ABS_X', state=0.6315805536057619),
+ GamepadEventObservation(timestamp=1674069721.4077132, code='ABS_X', state=0.9695730460524308),
+ GamepadEventObservation(timestamp=1674069721.4077132, code='ABS_Y', state=-0.3846247749259926),
+ GamepadEventObservation(timestamp=1674069721.455713, code='ABS_Y', state=-0.434858241523484),
+ GamepadEventObservation(timestamp=1674069721.5197136, code='ABS_X', state=0.6572161015655995),
+ GamepadEventObservation(timestamp=1674069721.5197136, code='ABS_Y', state=-0.15701773125400556),
+ GamepadEventObservation(timestamp=1674069721.5277135, code='ABS_X', state=0.38023010956144904),
+ GamepadEventObservation(timestamp=1674069721.5357153, code='ABS_X', state=0.1174962614825892),
+ GamepadEventObservation(timestamp=1674069721.5357153, code='ABS_Y', state=0.11978514969328898),
+ GamepadEventObservation(timestamp=1674069721.551714, code='ABS_Z', state=0.09019607843137255),
+ GamepadEventObservation(timestamp=1674069721.5677137, code='ABS_Z', state=0.27450980392156865),
+ GamepadEventObservation(timestamp=1674069721.5757136, code='ABS_Z', state=0.39215686274509803),
+ GamepadEventObservation(timestamp=1674069721.5837133, code='ABS_Z', state=0.5568627450980392),
+ GamepadEventObservation(timestamp=1674069721.5837133, code='ABS_X', state=0.05557420575579089),
+ GamepadEventObservation(timestamp=1674069721.591714, code='ABS_Z', state=0.7764705882352941),
+ GamepadEventObservation(timestamp=1674069721.591714, code='ABS_Y', state=0.18305001983703115),
+ GamepadEventObservation(timestamp=1674069721.599713, code='ABS_Z', state=0.9725490196078431),
+ GamepadEventObservation(timestamp=1674069721.6077144, code='ABS_X', state=-0.1934873500778222),
+ GamepadEventObservation(timestamp=1674069721.6077144, code='ABS_Y', state=0.4597003082369457),
+ GamepadEventObservation(timestamp=1674069721.6237137, code='ABS_X', state=-0.44157231360820337),
+ GamepadEventObservation(timestamp=1674069721.631713, code='ABS_Y', state=0.532578508865627),
+ GamepadEventObservation(timestamp=1674069721.6397138, code='ABS_X', state=-0.7310708944975127),
+ GamepadEventObservation(timestamp=1674069721.6477134, code='ABS_Y', state=0.5970030823694571)]</code></pre>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
